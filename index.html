@@ -56,7 +56,8 @@ var P=
 var BASE='https://cdn.myportfolio.com/f8e70dd1-46f8-4bda-a69a-83ef83825275/';
 function U(pair){var i=pair.indexOf(':');return BASE+pair.slice(0,i)+'_rw_1400.jpg?h='+pair.slice(i+1);}
 var cP=0,cI=0,aF='ALL';
-function filt(b,c){aF=c;document.querySelectorAll('nav button').forEach(function(x){x.classList.remove('act')});b.classList.add('act');renderGrid();}
+function filt(b,c){aF=c;document.querySelectorAll('nav button').forEach(function(x){x.classList.remove('act')});b.classList.add('act');window.addEventListener('popstate',function(){if(document.getElementById('modal').classList.contains('open'))closeM(1);});
+renderGrid();}
 function renderGrid(){
   var g=document.getElementById('grid');g.innerHTML='';
   P.forEach(function(p,pi){
@@ -71,8 +72,8 @@ function renderGrid(){
     g.appendChild(d);
   });
 }
-function openM(pi){cP=pi;cI=0;showImg();document.getElementById('modal').classList.add('open');document.addEventListener('keydown',onKey);}
-function closeM(){document.getElementById('modal').classList.remove('open');document.removeEventListener('keydown',onKey);}
+function openM(pi){cP=pi;cI=0;showImg();document.getElementById('modal').classList.add('open');document.addEventListener('keydown',onKey);history.pushState({m:1},'');}
+function closeM(p){document.getElementById('modal').classList.remove('open');document.removeEventListener('keydown',onKey);if(!p&&history.state&&history.state.m)history.back();}
 function showImg(){
   var p=P[cP],imgs=p.imgs;
   document.getElementById('modal-img').src=U(imgs[cI]);
