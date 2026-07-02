@@ -14,6 +14,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{overflow-x:hidden}
 body{font-family:'Helvetica Neue',Arial,sans-serif;background:#fff;color:#000;overflow-x:hidden}
 header{padding:22px 40px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:#fff;z-index:100;border-bottom:1px solid #eee}
 .logo{font-size:13px;font-weight:500;letter-spacing:.1em;text-transform:lowercase}
@@ -40,7 +41,13 @@ nav button:hover{color:#000}
 #modal-prev{left:4px}#modal-next{right:4px}
 #modal-prev:hover,#modal-next:hover{opacity:.85}
 #modal-counter{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);color:rgba(255,255,255,.4);font-size:11px;letter-spacing:.08em}
-@media(max-width:768px){header{padding:16px 20px}}
+@media(max-width:768px){
+header{padding:12px 14px;flex-wrap:wrap;gap:6px 0}
+.logo img{height:40px!important}
+nav{gap:12px;flex-wrap:wrap;justify-content:flex-end;row-gap:4px}
+nav button{font-size:10px;letter-spacing:.06em}
+nav button[style]{margin-left:10px!important}
+}
 #index{display:none;padding:26px 40px}
 #index.on{display:block}
 .idx-item{display:flex;align-items:baseline;gap:16px;padding:12px 0;border-bottom:1px solid #eee;cursor:pointer}
@@ -60,7 +67,7 @@ footer a:hover{color:#000}
 .about-txt .sep{height:26px}
 .about-txt a{color:#888;text-decoration:none;transition:color .2s}
 .about-txt a:hover{color:#000}
-@media(max-width:768px){#about{flex-direction:column;align-items:center;gap:36px;padding:36px 20px}#about img{width:80vw;max-width:420px}}
+@media(max-width:768px){#about{flex-direction:column;align-items:center;gap:36px;padding:36px 20px}#about img{width:82vw;max-width:100%}}
 </style>
 </head>
 <body>
