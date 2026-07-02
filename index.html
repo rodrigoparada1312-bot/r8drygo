@@ -8,9 +8,9 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Helvetica Neue',Arial,sans-serif;background:#fff;color:#000;overflow-x:hidden}
 header{padding:22px 40px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:#fff;z-index:100;border-bottom:1px solid #eee}
-.logo{font-size:13px;font-weight:500;letter-spacing:.1em;text-transform:uppercase}
+.logo{font-size:13px;font-weight:500;letter-spacing:.1em;text-transform:lowercase}
 nav{display:flex;gap:24px}
-nav button{font-size:11px;letter-spacing:.1em;text-transform:uppercase;background:none;border:none;cursor:pointer;color:#aaa;padding:4px 0;border-bottom:1px solid transparent;transition:all .2s}
+nav button{font-size:11px;letter-spacing:.1em;text-transform:lowercase;background:none;border:none;cursor:pointer;color:#aaa;padding:4px 0;border-bottom:1px solid transparent;transition:all .2s}
 nav button.act{color:#000;border-bottom-color:#000}
 nav button:hover{color:#000}
 #grid{columns:4;column-gap:3px;padding:3px}
@@ -19,19 +19,28 @@ nav button:hover{color:#000}
 .proj:hover img{transform:scale(1.04)}
 .proj-info{position:absolute;bottom:0;left:0;right:0;padding:18px 16px;background:linear-gradient(to top,rgba(0,0,0,.65) 0%,transparent 100%);opacity:0;transition:opacity .3s}
 .proj:hover .proj-info{opacity:1}
-.proj-info h3{color:#fff;font-size:12px;font-weight:400;letter-spacing:.1em;text-transform:uppercase;margin-bottom:3px}
-.proj-info span{color:rgba(255,255,255,.6);font-size:10px;letter-spacing:.06em;text-transform:uppercase}
+.proj-info h3{color:#fff;font-size:12px;font-weight:400;letter-spacing:.1em;text-transform:lowercase;margin-bottom:3px}
+.proj-info span{color:rgba(255,255,255,.6);font-size:10px;letter-spacing:.06em;text-transform:lowercase}
 #modal{display:none;position:fixed;inset:0;background:#111;z-index:1000;align-items:center;justify-content:center}
 #modal.open{display:flex}
 #modal-img{max-width:100vw;max-height:100vh;object-fit:contain;display:block;user-select:none}
 #modal-close{position:fixed;top:18px;right:22px;color:#fff;font-size:26px;cursor:pointer;z-index:1001;opacity:.65;transition:opacity .2s;background:none;border:none;line-height:1}
 #modal-close:hover{opacity:1}
-#modal-title{position:fixed;top:20px;left:24px;color:rgba(255,255,255,.55);font-size:11px;letter-spacing:.1em;text-transform:uppercase}
+#modal-title{position:fixed;top:20px;left:24px;color:rgba(255,255,255,.55);font-size:11px;letter-spacing:.1em;text-transform:lowercase}
 #modal-prev,#modal-next{position:fixed;top:50%;transform:translateY(-50%);color:#fff;font-size:40px;cursor:pointer;z-index:1001;opacity:.35;transition:opacity .2s;background:none;border:none;padding:16px;line-height:1}
 #modal-prev{left:4px}#modal-next{right:4px}
 #modal-prev:hover,#modal-next:hover{opacity:.85}
 #modal-counter{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);color:rgba(255,255,255,.4);font-size:11px;letter-spacing:.08em}
 @media(max-width:768px){#grid{columns:2}header{padding:16px 20px}}
+#index{display:none;padding:26px 40px}
+#index.on{display:block}
+.idx-item{display:flex;align-items:baseline;gap:16px;padding:12px 0;border-bottom:1px solid #eee;cursor:pointer}
+.idx-item h2{font-size:20px;font-weight:400;letter-spacing:.05em;text-transform:lowercase;transition:opacity .2s}
+.idx-item span{font-size:10px;color:#aaa;letter-spacing:.08em;text-transform:lowercase}
+.idx-item:hover h2{opacity:.4}
+#idx-preview{position:fixed;pointer-events:none;z-index:500;width:260px;display:none}
+#idx-preview img{width:100%;display:block}
+@media(max-width:768px){.idx-item h2{font-size:15px}#index{padding:16px 20px}#idx-preview{display:none!important}}
 </style>
 </head>
 <body>
@@ -40,8 +49,11 @@ nav button:hover{color:#000}
 <button class="act" onclick="filt(this,'ALL')">Todo</button>
 <button onclick="filt(this,'COMERCIAL')">Comercial</button>
 <button onclick="filt(this,'EDITORIAL')">Editorial</button>
+<button id="viewToggle" onclick="toggleView()" style="margin-left:18px">&Iacute;ndice</button>
 </nav></header>
 <main id="grid"></main>
+<div id="index"></div>
+<div id="idx-preview"><img src="" alt=""></div>
 <div id="modal">
 <button id="modal-close" onclick="closeM()">&#215;</button>
 <div id="modal-title"></div>
@@ -56,7 +68,7 @@ var P=
 var BASE='https://cdn.myportfolio.com/f8e70dd1-46f8-4bda-a69a-83ef83825275/';
 function U(pair){var i=pair.indexOf(':');return BASE+pair.slice(0,i)+'_rw_1400.jpg?h='+pair.slice(i+1);}
 var cP=0,cI=0,aF='ALL';
-function filt(b,c){aF=c;document.querySelectorAll('nav button').forEach(function(x){x.classList.remove('act')});b.classList.add('act');renderGrid();}
+function filt(b,c){aF=c;document.querySelectorAll('nav button').forEach(function(x){x.classList.remove('act')});b.classList.add('act');renderGrid();renderIndex();}
 function renderGrid(){
   var g=document.getElementById('grid');g.innerHTML='';
   P.forEach(function(p,pi){
@@ -86,7 +98,23 @@ function nav(d){var imgs=P[cP].imgs;cI=(cI+d+imgs.length)%imgs.length;showImg();
 function onKey(e){if(e.key==='Escape')closeM();if(e.key==='ArrowLeft')nav(-1);if(e.key==='ArrowRight')nav(1);}
 document.getElementById('modal').onclick=function(e){if(e.target===this)closeM();};
 window.addEventListener('popstate',function(){if(document.getElementById('modal').classList.contains('open'))closeM(1);});
+var VIEW='grid';
+function toggleView(){VIEW=VIEW==='grid'?'index':'grid';var t=document.getElementById('viewToggle');t.textContent=VIEW==='grid'?'Índice':'Grilla';document.getElementById('grid').style.display=VIEW==='grid'?'':'none';document.getElementById('index').classList.toggle('on',VIEW==='index');}
+function renderIndex(){
+  var x=document.getElementById('index');x.innerHTML='';
+  P.forEach(function(p,pi){
+    if(aF!=='ALL'&&p.cat!==aF)return;
+    if(!p.imgs.length)return;
+    var d=document.createElement('div');d.className='idx-item';
+    d.innerHTML='<h2>'+p.t+'</h2><span>'+p.cat+'</span>';
+    d.onclick=function(){openM(pi);};
+    d.onmousemove=function(e){var pv=document.getElementById('idx-preview');pv.style.display='block';pv.querySelector('img').src=U(p.imgs[0]);pv.style.left=(e.clientX+24)+'px';pv.style.top=Math.min(e.clientY-60,window.innerHeight-380)+'px';};
+    d.onmouseleave=function(){document.getElementById('idx-preview').style.display='none';};
+    x.appendChild(d);
+  });
+}
 renderGrid();
+renderIndex();
 </script>
 </body>
 </html>
