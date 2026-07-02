@@ -54,6 +54,14 @@ nav button:hover{color:#000}
 footer{padding:36px 40px;display:flex;gap:28px;justify-content:center;border-top:1px solid #eee;margin-top:24px}
 footer a{font-size:11px;letter-spacing:.1em;text-transform:lowercase;color:#888;text-decoration:none;transition:color .2s}
 footer a:hover{color:#000}
+#about{display:none;padding:70px 40px;justify-content:center;align-items:flex-start;gap:80px}
+#about.on{display:flex}
+#about img{width:min(420px,42vw);display:block;box-shadow:0 3px 30px rgba(0,0,0,.15)}
+.about-txt{max-width:340px;font-size:12px;letter-spacing:.08em;line-height:2.1;text-transform:lowercase;padding-top:10px;color:#111}
+.about-txt .sep{height:26px}
+.about-txt a{color:#888;text-decoration:none;transition:color .2s}
+.about-txt a:hover{color:#000}
+@media(max-width:768px){#about{flex-direction:column;align-items:center;gap:36px;padding:36px 20px}#about img{width:80vw;max-width:420px}}
 </style>
 </head>
 <body>
@@ -63,10 +71,15 @@ footer a:hover{color:#000}
 <button onclick="filt(this,'COMERCIAL')">Comercial</button>
 <button onclick="filt(this,'EDITORIAL')">Editorial</button>
 <button id="viewToggle" onclick="toggleView()" style="margin-left:18px">&Iacute;ndice</button>
+<button onclick="showAbout()">About</button>
 </nav></header>
 <main id="grid"></main>
 <div id="index"></div>
 <div id="idx-preview"><img src="" alt=""></div>
+<div id="about">
+<img src="about.jpg" alt="rodrigo parada — r8drygo">
+<div class="about-txt">chilean photographer, born in 1995.<br>currently based in santiago de chile.<div class="sep"></div><a href="mailto:rodri@ultraestudio.cl">rodri@ultraestudio.cl</a><br><a href="https://www.instagram.com/r8drygo" target="_blank" rel="noopener">instagram — @r8drygo</a></div>
+</div>
 <footer>
 <a href="mailto:rodri@ultraestudio.cl">rodri@ultraestudio.cl</a>
 <a href="https://www.instagram.com/r8drygo" target="_blank" rel="noopener">instagram &mdash; @r8drygo</a>
@@ -85,7 +98,7 @@ var P=
 var BASE='https://cdn.myportfolio.com/f8e70dd1-46f8-4bda-a69a-83ef83825275/';
 function U(pair){var p=pair.split(':');return BASE+p[0]+'_rw_'+(p[2]||'1400')+'.jpg?h='+p[1];}
 var cP=0,cI=0,aF='ALL';
-function filt(b,c){aF=c;document.querySelectorAll('nav button').forEach(function(x){x.classList.remove('act')});b.classList.add('act');renderGrid();renderIndex();}
+function filt(b,c){hideAbout();aF=c;document.querySelectorAll('nav button').forEach(function(x){x.classList.remove('act')});b.classList.add('act');renderGrid();renderIndex();}
 function renderGrid(){
   var g=document.getElementById('grid');g.innerHTML='';
   var n=window.innerWidth<=768?2:4;
@@ -120,7 +133,9 @@ function onKey(e){if(e.key==='Escape')closeM();if(e.key==='ArrowLeft')nav(-1);if
 document.getElementById('modal').onclick=function(e){if(e.target===this)closeM();};
 window.addEventListener('popstate',function(){if(document.getElementById('modal').classList.contains('open'))closeM(1);});
 var VIEW='grid';
-function toggleView(){VIEW=VIEW==='grid'?'index':'grid';var t=document.getElementById('viewToggle');t.textContent=VIEW==='grid'?'Índice':'Grilla';document.getElementById('grid').style.display=VIEW==='grid'?'':'none';document.getElementById('index').classList.toggle('on',VIEW==='index');}
+function showAbout(){document.getElementById('about').classList.add('on');document.getElementById('grid').style.display='none';document.getElementById('index').classList.remove('on');window.scrollTo(0,0);}
+function hideAbout(){document.getElementById('about').classList.remove('on');document.getElementById('grid').style.display=VIEW==='grid'?'':'none';document.getElementById('index').classList.toggle('on',VIEW==='index');}
+function toggleView(){document.getElementById('about').classList.remove('on');VIEW=VIEW==='grid'?'index':'grid';var t=document.getElementById('viewToggle');t.textContent=VIEW==='grid'?'Índice':'Grilla';document.getElementById('grid').style.display=VIEW==='grid'?'':'none';document.getElementById('index').classList.toggle('on',VIEW==='index');}
 function renderIndex(){
   var x=document.getElementById('index');x.innerHTML='';
   P.forEach(function(p,pi){
@@ -134,7 +149,7 @@ function renderIndex(){
     x.appendChild(d);
   });
 }
-function goHome(){if(document.getElementById('modal').classList.contains('open'))closeM();VIEW='grid';document.getElementById('viewToggle').textContent='Índice';document.getElementById('grid').style.display='';document.getElementById('index').classList.remove('on');aF='ALL';document.querySelectorAll('nav button').forEach(function(x){x.classList.remove('act')});document.querySelector('nav button').classList.add('act');renderGrid();renderIndex();window.scrollTo(0,0);}
+function goHome(){document.getElementById('about').classList.remove('on');if(document.getElementById('modal').classList.contains('open'))closeM();VIEW='grid';document.getElementById('viewToggle').textContent='Índice';document.getElementById('grid').style.display='';document.getElementById('index').classList.remove('on');aF='ALL';document.querySelectorAll('nav button').forEach(function(x){x.classList.remove('act')});document.querySelector('nav button').classList.add('act');renderGrid();renderIndex();window.scrollTo(0,0);}
 renderGrid();
 renderIndex();
 </script>
