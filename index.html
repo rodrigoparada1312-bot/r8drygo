@@ -99,7 +99,7 @@ function renderGrid(){
     g.appendChild(d);
   });
 }
-function openM(pi){cP=pi;cI=0;showImg();document.getElementById('modal').classList.add('open');document.addEventListener('keydown',onKey);history.pushState({m:1},'');}
+function openM(pi){cP=pi;cI=0;showImg();document.getElementById('modal').classList.add('open');document.addEventListener('keydown',onKey);history.pushState({m:1},'');P[pi].imgs.forEach(function(x){var i=new Image();i.src=U(x);});}
 function closeM(p){document.getElementById('modal').classList.remove('open');document.removeEventListener('keydown',onKey);if(!p&&history.state&&history.state.m)history.back();}
 function showImg(){
   var p=P[cP],imgs=p.imgs;
