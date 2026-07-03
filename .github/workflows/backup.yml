@@ -1,0 +1,45 @@
+name: backup-images
+on: workflow_dispatch
+permissions:
+  contents: write
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: download images
+        run: |
+          mkdir -p img
+          python3 - << 'EOF'
+          import re,json,urllib.request,os
+          html=open('index.html').read()
+          m=re.search(r'var P=\s*(\[.*?\])\s*;',html,re.S)
+          arr=json.loads(m.group(1))
+          ms=re.search(r'var S=(\{.*?\});',html,re.S)
+          S=json.loads(ms.group(1)) if ms else {}
+          BASE='https://cdn.myportfolio.com/f8e70dd1-46f8-4bda-a69a-83ef83825275/'
+          def dl(url,path):
+              if os.path.exists(path): return True
+              try:
+                  urllib.request.urlretrieve(url,path);return True
+              except Exception as e:
+                  print('FALLO',url,e);return False
+          full=0;fallos=0
+          for p in arr:
+              for pair in p['imgs']:
+                  parts=pair.split(':');u=parts[0];h=parts[1];s=parts[2] if len(parts)>2 else '1400'
+                  if dl(BASE+u+'_rw_'+s+'.jpg?h='+h,'img/'+u+'.jpg'): full+=1
+                  else: fallos+=1
+          small=0
+          for u,h in S.items():
+              if dl(BASE+u+'_rw_600.jpg?h='+h,'img/'+u+'_600.jpg'): small+=1
+          dl(BASE+'79afe848-bf5f-4fb5-9e98-b6c79eaaa2b4_rwc_0x0x1194x553x4096.png?h=3ef9a6667118502b571b84c7386abc13','img/logo.png')
+          print('completas:',full,'ligeras:',small,'fallos:',fallos)
+          EOF
+      - name: commit
+        run: |
+          git config user.name backup-bot
+          git config user.email backup@users.noreply.github.com
+          git add img
+          git commit -m "Respaldo de imagenes desde CDN" || echo "sin cambios"
+          git push
