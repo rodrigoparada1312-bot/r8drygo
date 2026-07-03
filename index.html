@@ -25,8 +25,7 @@ nav button:hover{color:#000}
 #grid{display:flex;gap:3px;padding:3px;align-items:flex-start}
 .gcol{flex:1;display:flex;flex-direction:column;gap:3px;min-width:0}
 .proj{position:relative;cursor:pointer;overflow:hidden;background:#f2f2f2}
-.proj img{width:100%;height:auto;display:block;opacity:0;transition:transform .5s ease,opacity .6s ease}
-.proj img.ld{opacity:1}
+.proj img{width:100%;height:auto;display:block;transition:transform .5s ease}
 .proj:hover img{transform:scale(1.04)}
 .proj-info{position:absolute;bottom:0;left:0;right:0;padding:18px 16px;background:linear-gradient(to top,rgba(0,0,0,.65) 0%,transparent 100%);opacity:0;transition:opacity .3s}
 .proj:hover .proj-info{opacity:1}
@@ -117,7 +116,7 @@ function renderGrid(){
     if(aF!=='ALL'&&p.cat!==aF)return;
     if(!p.imgs.length)return;
     var d=document.createElement('div');d.className='proj';
-    var im=document.createElement('img');im.src=(p.cov&&window.innerWidth<=768)?'img/'+p.cov.split(':')[0]+'_600.jpg':U(p.imgs[0]);im.loading='lazy';im.alt=p.t;im.onload=function(){im.classList.add('ld')};if(im.complete&&im.naturalWidth)im.classList.add('ld');
+    var im=document.createElement('img');im.src=(p.cov&&window.innerWidth<=768)?'img/'+p.cov.split(':')[0]+'_600.jpg':U(p.imgs[0]);im.loading='lazy';im.alt=p.t;
     var info=document.createElement('div');info.className='proj-info';
     info.innerHTML='<h3>'+p.t+'</h3><span>'+p.cat+'</span>';
     d.appendChild(im);d.appendChild(info);
