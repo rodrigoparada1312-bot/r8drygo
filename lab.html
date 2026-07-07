@@ -54,7 +54,7 @@ body{display:flex;min-height:100vh}
 
 /* ---------- MAIN ---------- */
 #main{margin-left:var(--side);flex:1 1 auto;padding:26px 22px 60px;min-width:0}
-#topbar{display:flex;gap:20px;margin:0 0 18px}
+#topbar{display:flex;gap:20px;margin:0 0 18px;justify-content:flex-end}
 #stage{display:flex;gap:var(--gap);align-items:flex-start}
 .gcol{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:var(--gap)}
 .cell{cursor:pointer;position:relative;background:#f4f4f4}
@@ -143,6 +143,7 @@ body{display:flex;min-height:100vh}
   <div class="filters" id="filters">
     <button class="fbtn act" data-cat="ALL" onclick="setCat('ALL',this)">all</button>
     <button class="fbtn" data-cat="COMERCIAL" onclick="setCat('COMERCIAL',this)">comercial</button>
+    <button class="fbtn" data-cat="VIDEO" onclick="setView('video');document.querySelectorAll('.fbtn').forEach(function(b){b.classList.remove('act')});this.classList.add('act')">video</button>
     <button class="fbtn" data-cat="EDITORIAL" onclick="setCat('EDITORIAL',this)">editorial</button>
   </div>
 
@@ -164,6 +165,8 @@ body{display:flex;min-height:100vh}
   <div id="about">
     <img src="about.jpg" alt="rodrigo parada — r8drygo">
     <div class="about-txt">chilean photographer, born in 1995.<br>currently based in santiago de chile.
+      <div class="sep"></div>
+      clientes: Adidas, MUBI, Ripley, Vogue Mexico, ABC, Bold, The Line
       <div class="sep"></div>
       <a href="mailto:rodri@r8drygo.com">rodri@r8drygo.com</a><br>
       <a href="https://www.instagram.com/r8drygo" target="_blank" rel="noopener">instagram — @r8drygo</a>
@@ -204,22 +207,23 @@ body{display:flex;min-height:100vh}
    Todos aparecen en la pestaña "video".                        */
 var VC="https://i.vimeocdn.com/video/";
 var CLIPS=[
- {id:"1206578041",t:"trial nueva colección",o:"H",home:true,ho:5,th:VC+"2175459565-f8d46d0f4b8851612826968fa4f345241bff465b1d2052a65737972bbd610859-d_640"},
- {id:"1206568953",t:"massima rita abrigos",o:"V",home:true,ho:1,th:VC+"2175446513-aed47bd37151c7dd16a3549d1844bc98b3c1cf3eb439d83f7938dc467e7905f8-d_640"},
- {id:"1206577236",t:"trial graduación",o:"H",home:true,ho:6,th:VC+"2175457737-4c708e724463242c533945f163a4b680ce952cc5fd8dc890ea8d82e6ee636125-d_640"},
- {id:"1206580359",t:"trial zapatos",o:"H",home:true,ho:2,th:VC+"2175461798-b3e623c5becfdc06027e8728af8f64ed8f78807de4f5c9b799251ed0ebce61e7-d_640"},
- {id:"1206569734",t:"massima rita trench",o:"V",home:true,ho:3,th:VC+"2175447491-0fb54b1cac4afb47dd93bbce7598756ae4ccf37e77cafdce7838fe422bf4532b-d_640"},
- {id:"1206570086",t:"ripley girl gang x samsung",o:"V",home:true,ho:7,th:VC+"2175447999-e94ed19b948e34df98aaf1cd80d0bd21c46c15ec9d83f590e583a8320de70a78-d_640"},
- {id:"1206570560",t:"ripley marquis 2",o:"V",home:true,ho:8,th:VC+"2175448741-64a929cb25581b1ae8be024a1043aa9e34dc8a0ae6b8947a3bff45d87b5cd1f8-d_640"},
- {id:"1206572400",t:"ripley sneakerhead",o:"V",home:true,ho:9,th:VC+"2175451231-a28b77353d43b86d65aec738e309335a9cc35ce875ea326363292aac6c3ef458-d_640"},
- {id:"1206572682",t:"ripley verano 2",o:"V",home:true,ho:10,th:VC+"2175451548-6ba40789e8688a88d58e6be3d40534c1510b743f3d25bb593e788d30e4d71166-d_640"},
- {id:"1206513495",t:"c miller summer 2023",o:"V",home:true,ho:11,th:VC+"2175375490-cc270e107928f98887381d1f386bafd28441ad7f2c219e91488a7d4563001709-d_640"},
- {id:"1206566197",t:"c miller summer 2024",o:"V",home:true,ho:4,th:VC+"2175443013-0be26d1ce9b79412dac40c085e65730225ae4aa033d694652a812d367dbd0da2-d_640"},
- {id:"1206566742",t:"degoya cctv",o:"V",home:true,ho:12,th:VC+"2175443722-07251448f1d0191f9e5907440d1a5bf8d1bd7dc383cb941d3b5b72591427537a-d_640"},
- {id:"1206567106",t:"degoya winter 2024",o:"H",home:true,ho:13,th:VC+"2175444163-e01c938b6412737c801a176502155e20ebdfc5e09583335d59b9ae17c12cd140-d_640"},
- {id:"1206576355",t:"trial alto verano",o:"H",home:true,ho:14,th:VC+"2175456451-22c402e931f54e43887a881b17dca489fd0931766934c939146e7dd8976cfbb2-d_640"},
- {id:"1206567763",t:"jack & jones ddp 3",o:"H",home:true,ho:15,th:VC+"2175445044-d6f053e3df47fec9e81e4792037204b5182b65135d9d7eef134407e02a9cdd22-d_640"},
- {id:"1206581203",t:"abc verano 2025",o:"H",home:true,ho:16,th:VC+"2175462918-4e61c125d6aa11860c352bcdf1de45ca9077f354349b988cd8fa54ab8992c55b-d_640"}
+ {id:"1206581237",t:"abc sastreros",o:"H",home:true,ho:1,th:VC+"2175462945-cda52b456cb2fb728ad9428368987a2a981b73603b7441f327b31a948d0a3c5d-d_640"},
+ {id:"1206578041",t:"trial nueva colección",o:"H",home:true,ho:6,th:VC+"2175459565-f8d46d0f4b8851612826968fa4f345241bff465b1d2052a65737972bbd610859-d_640"},
+ {id:"1206568953",t:"massima rita abrigos",o:"V",home:true,ho:2,th:VC+"2175446513-aed47bd37151c7dd16a3549d1844bc98b3c1cf3eb439d83f7938dc467e7905f8-d_640"},
+ {id:"1206577236",t:"trial graduación",o:"H",home:true,ho:7,th:VC+"2175457737-4c708e724463242c533945f163a4b680ce952cc5fd8dc890ea8d82e6ee636125-d_640"},
+ {id:"1206580359",t:"trial zapatos",o:"H",home:true,ho:3,th:VC+"2175461798-b3e623c5becfdc06027e8728af8f64ed8f78807de4f5c9b799251ed0ebce61e7-d_640"},
+ {id:"1206569734",t:"massima rita trench",o:"V",home:true,ho:4,th:VC+"2175447491-0fb54b1cac4afb47dd93bbce7598756ae4ccf37e77cafdce7838fe422bf4532b-d_640"},
+ {id:"1206570086",t:"ripley girl gang x samsung",o:"V",home:true,ho:8,th:VC+"2175447999-e94ed19b948e34df98aaf1cd80d0bd21c46c15ec9d83f590e583a8320de70a78-d_640"},
+ {id:"1206570560",t:"ripley marquis 2",o:"V",home:true,ho:9,th:VC+"2175448741-64a929cb25581b1ae8be024a1043aa9e34dc8a0ae6b8947a3bff45d87b5cd1f8-d_640"},
+ {id:"1206572400",t:"ripley sneakerhead",o:"V",home:true,ho:10,th:VC+"2175451231-a28b77353d43b86d65aec738e309335a9cc35ce875ea326363292aac6c3ef458-d_640"},
+ {id:"1206572682",t:"ripley verano 2",o:"V",home:true,ho:11,th:VC+"2175451548-6ba40789e8688a88d58e6be3d40534c1510b743f3d25bb593e788d30e4d71166-d_640"},
+ {id:"1206513495",t:"c miller summer 2023",o:"V",home:true,ho:12,th:VC+"2175375490-cc270e107928f98887381d1f386bafd28441ad7f2c219e91488a7d4563001709-d_640"},
+ {id:"1206566197",t:"c miller summer 2024",o:"V",home:true,ho:5,th:VC+"2175443013-0be26d1ce9b79412dac40c085e65730225ae4aa033d694652a812d367dbd0da2-d_640"},
+ {id:"1206566742",t:"degoya cctv",o:"V",home:true,ho:13,th:VC+"2175443722-07251448f1d0191f9e5907440d1a5bf8d1bd7dc383cb941d3b5b72591427537a-d_640"},
+ {id:"1206567106",t:"degoya winter 2024",o:"H",home:true,ho:14,th:VC+"2175444163-e01c938b6412737c801a176502155e20ebdfc5e09583335d59b9ae17c12cd140-d_640"},
+ {id:"1206576355",t:"trial alto verano",o:"H",home:true,ho:15,th:VC+"2175456451-22c402e931f54e43887a881b17dca489fd0931766934c939146e7dd8976cfbb2-d_640"},
+ {id:"1206567763",t:"jack & jones ddp 3",o:"H",home:true,ho:16,th:VC+"2175445044-d6f053e3df47fec9e81e4792037204b5182b65135d9d7eef134407e02a9cdd22-d_640"},
+ {id:"1206581203",t:"abc verano 2025",o:"H",home:true,ho:17,th:VC+"2175462918-4e61c125d6aa11860c352bcdf1de45ca9077f354349b988cd8fa54ab8992c55b-d_640"}
 ];
 function homeClips(){return CLIPS.filter(function(c){return c.home;}).sort(function(a,b){return a.ho-b.ho;});}
 
@@ -328,7 +332,8 @@ function clipCell(c){
 function setView(v){
   VIEW=v;
   document.querySelectorAll(".vbtn").forEach(function(b){b.classList.toggle("act",b.dataset.view===v);});
-  document.getElementById("filters").style.display=(v==="index")?"flex":"none";
+  document.getElementById("filters").style.display=(v==="about")?"none":"flex";
+  if(v==="index")document.querySelectorAll(".fbtn").forEach(function(b){b.classList.toggle("act",b.dataset.cat===aF);});
   window.scrollTo(0,0);render();
 }
 function setCat(c,btn){
