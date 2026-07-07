@@ -285,7 +285,8 @@ function render(){
       if(hc.length){
         var every=Math.max(4,Math.floor(items.length/(hc.length+1)));
         var pos=every,k=0;
-        while(k<hc.length&&pos<=items.length){
+        while(k<hc.length){
+          if(pos>items.length)pos=items.length;
           items.splice(pos,0,{type:"clip",clip:hc[k]});
           k++;pos+=every+1;
         }
