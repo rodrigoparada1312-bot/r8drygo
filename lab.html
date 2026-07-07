@@ -1,30 +1,376 @@
-<!DOCTYPE html><html lang="es"><head><meta charset="utf-8">
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="robots" content="noindex,nofollow"><title>r8drygo — lab</title>
+<title>r8drygo — lab</title>
+<meta name="robots" content="noindex,nofollow">
+<meta name="description" content="rodrigo parada — photographer + director">
+<link rel="icon" type="image/png" href="img/logo.png">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:Helvetica,Arial,sans-serif;background:#fff;color:#111;text-transform:lowercase}
-header{display:flex;justify-content:space-between;align-items:center;padding:24px 32px}
-header img{height:56px}
-nav a{color:#999;text-decoration:none;margin-left:18px;font-size:14px}
-nav a.on{color:#111;border-bottom:1px solid #111}
-.wrap{max-width:1100px;margin:0 auto;padding:8px 32px 60px}
-.note{font-size:12px;color:#bbb;margin-bottom:24px}
-.mgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:22px}
-.mitem .vbox{position:relative;width:100%;padding-top:56.25%;background:#000}
-.mitem iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
-.mitem h3{font-size:13px;font-weight:normal;margin-top:8px}
-.mitem span{font-size:11px;color:#999}
-footer{text-align:center;padding:40px 0;font-size:12px;color:#999}
-@media(max-width:768px){header{padding:16px}.wrap{padding:8px 16px 40px}.mgrid{grid-template-columns:1fr}}
-</style></head><body>
-<header><a href="/"><img src="logo.png" alt="r8drygo" onerror="this.outerHTML='r8drygo'"></a>
-<nav><a href="/">fotos</a><a class="on" href="#">motion picture</a></nav></header>
-<div class="wrap">
-<p class="note">pagina de pruebas — no enlazada desde la web publica</p>
-<div class="mgrid">
-<div class="mitem"><div class="vbox"><iframe src="https://player.vimeo.com/video/76979871?title=0&byline=0&portrait=0&dnt=1" allow="autoplay;fullscreen;picture-in-picture" allowfullscreen loading="lazy"></iframe></div><h3>demo motion 01</h3><span>reemplazar con tu video de vimeo</span></div>
-<div class="mitem"><div class="vbox"><iframe src="https://player.vimeo.com/video/1084537?title=0&byline=0&portrait=0&dnt=1" allow="autoplay;fullscreen;picture-in-picture" allowfullscreen loading="lazy"></iframe></div><h3>demo motion 02</h3><span>reemplazar con tu video de vimeo</span></div>
-</div></div>
-<footer>lab — r8drygo</footer>
-</body></html>
+:root{
+  --bg:#ffffff;--fg:#111111;--mut:#9a9a9a;--line:#ececec;
+  --side:250px;--gap:10px;
+}
+html,body{background:var(--bg);color:var(--fg);
+  font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
+  -webkit-font-smoothing:antialiased;font-size:13px;line-height:1.45}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+body{display:flex;min-height:100vh}
+
+/* ---------- SIDEBAR ---------- */
+#side{position:fixed;top:0;left:0;width:var(--side);height:100vh;
+  padding:26px 22px 22px;display:flex;flex-direction:column;
+  border-right:1px solid var(--line);background:var(--bg);z-index:40}
+#brand{display:flex;flex-direction:column;gap:10px;flex:0 0 auto}
+#brand img{width:74px;height:auto}
+.tag{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--fg)}
+#views{margin-top:22px;display:flex;flex-direction:column;gap:3px;flex:0 0 auto}
+.vbtn{font-size:12px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--mut);cursor:pointer;background:none;border:0;text-align:left;
+  padding:2px 0;font-family:inherit;transition:color .15s}
+.vbtn:hover{color:var(--fg)}
+.vbtn.act{color:var(--fg)}
+.filters{margin-top:14px;display:flex;flex-direction:column;gap:2px;flex:0 0 auto}
+.fbtn{font-size:11px;letter-spacing:.05em;color:var(--mut);cursor:pointer;
+  background:none;border:0;text-align:left;padding:1px 0;font-family:inherit;
+  text-transform:lowercase;transition:color .15s}
+.fbtn:hover{color:var(--fg)}
+.fbtn.act{color:var(--fg)}
+#idxwrap{margin-top:16px;flex:1 1 auto;overflow-y:auto;overflow-x:hidden;
+  scrollbar-width:thin}
+#idxwrap::-webkit-scrollbar{width:5px}
+#idxwrap::-webkit-scrollbar-thumb{background:var(--line)}
+.ixItem{display:block;font-size:11.5px;line-height:1.5;color:var(--mut);
+  cursor:pointer;text-transform:lowercase;padding:1px 0;transition:color .12s;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ixItem:hover,.ixItem.hot{color:var(--fg)}
+#contact{flex:0 0 auto;padding-top:16px;margin-top:12px;border-top:1px solid var(--line);
+  display:flex;flex-direction:column;gap:4px;font-size:11.5px;color:var(--mut)}
+#contact a:hover{color:var(--fg)}
+
+/* ---------- MAIN ---------- */
+#main{margin-left:var(--side);flex:1 1 auto;padding:26px 22px 60px;min-width:0}
+#stage{column-count:5;column-gap:var(--gap)}
+.cell{break-inside:avoid;margin-bottom:var(--gap);cursor:pointer;position:relative;
+  background:#f4f4f4}
+.cell img{width:100%;height:auto}
+.cell .cap{position:absolute;left:0;right:0;bottom:0;padding:8px 8px 7px;
+  font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:#fff;
+  background:linear-gradient(to top,rgba(0,0,0,.55),rgba(0,0,0,0));
+  opacity:0;transition:opacity .18s}
+.cell:hover .cap{opacity:1}
+.cell.vid::after{content:"";position:absolute;top:50%;left:50%;
+  width:0;height:0;transform:translate(-40%,-50%);
+  border-left:16px solid rgba(255,255,255,.92);
+  border-top:11px solid transparent;border-bottom:11px solid transparent;
+  filter:drop-shadow(0 0 4px rgba(0,0,0,.4));pointer-events:none;opacity:.9}
+.cell.vid .cap{opacity:1;background:linear-gradient(to top,rgba(0,0,0,.6),rgba(0,0,0,0))}
+#empty{color:var(--mut);font-size:12px;padding:40px 4px}
+
+/* ---------- MODAL (project lightbox) ---------- */
+#modal{position:fixed;inset:0;background:rgba(255,255,255,.985);z-index:80;
+  display:none;flex-direction:column}
+#modal.open{display:flex}
+#mtop{flex:0 0 auto;display:flex;justify-content:space-between;align-items:center;
+  padding:16px 20px;font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--fg)}
+#mcount{color:var(--mut)}
+#mclose{cursor:pointer;font-size:20px;line-height:1;color:var(--fg);background:none;border:0;padding:0 4px}
+#mstage{flex:1 1 auto;position:relative;display:flex;align-items:center;justify-content:center;
+  padding:0 20px 20px;min-height:0}
+#mimg{max-width:100%;max-height:100%;object-fit:contain}
+.marrow{position:absolute;top:0;bottom:0;width:34%;cursor:pointer;background:none;border:0;
+  display:flex;align-items:center;z-index:2}
+#mprev{left:0;justify-content:flex-start;padding-left:14px}
+#mnext{right:0;justify-content:flex-end;padding-right:14px}
+.marrow span{font-size:26px;color:var(--fg);opacity:0;transition:opacity .15s}
+.marrow:hover span{opacity:.6}
+
+/* ---------- VIDEO MODAL ---------- */
+#vmodal{position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:90;display:none;
+  flex-direction:column}
+#vmodal.open{display:flex}
+#vtop{flex:0 0 auto;display:flex;justify-content:space-between;align-items:center;
+  padding:16px 20px;font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:#fff}
+#vclose{cursor:pointer;font-size:20px;line-height:1;color:#fff;background:none;border:0}
+#vframe{flex:1 1 auto;display:flex;align-items:center;justify-content:center;padding:0 20px 24px}
+#vframe .box{position:relative;width:100%;max-width:1100px}
+#vframe iframe{width:100%;height:100%;border:0;background:#000}
+
+/* ---------- RESPONSIVE ---------- */
+@media(max-width:1400px){#stage{column-count:5}}
+@media(max-width:1100px){#stage{column-count:4}}
+@media(max-width:820px){
+  body{flex-direction:column}
+  #side{position:sticky;top:0;width:100%;height:auto;flex-direction:row;flex-wrap:wrap;
+    align-items:center;gap:14px;padding:12px 16px;border-right:0;border-bottom:1px solid var(--line)}
+  #brand{flex-direction:row;align-items:center;gap:12px}
+  #brand img{width:40px}
+  .tag{font-size:10px}
+  #views{flex-direction:row;margin-top:0;gap:14px}
+  .filters{flex-direction:row;margin-top:0;gap:12px;margin-left:auto}
+  #idxwrap{display:none}
+  #contact{flex-direction:row;gap:14px;border-top:0;padding-top:0;margin-top:0;width:100%;
+    font-size:10.5px}
+  #main{margin-left:0;padding:16px}
+  #stage{column-count:2}
+}
+</style>
+</head>
+<body>
+
+<aside id="side">
+  <div id="brand">
+    <img src="img/logo.png" alt="r8drygo">
+    <div class="tag">photographer + director</div>
+  </div>
+
+  <nav id="views">
+    <button class="vbtn act" data-view="index" onclick="setView('index')">index</button>
+    <button class="vbtn" data-view="motion" onclick="setView('motion')">motion picture</button>
+  </nav>
+
+  <div class="filters" id="filters">
+    <button class="fbtn act" data-cat="ALL" onclick="setCat('ALL',this)">all</button>
+    <button class="fbtn" data-cat="COMERCIAL" onclick="setCat('COMERCIAL',this)">comercial</button>
+    <button class="fbtn" data-cat="EDITORIAL" onclick="setCat('EDITORIAL',this)">editorial</button>
+  </div>
+
+  <div id="idxwrap"><div id="index"></div></div>
+
+  <div id="contact">
+    <a href="mailto:rodri@ultraestudio.cl">rodri@ultraestudio.cl</a>
+    <a href="https://instagram.com/r8drygo" target="_blank" rel="noopener">instagram @r8drygo</a>
+  </div>
+</aside>
+
+<main id="main">
+  <div id="stage"></div>
+  <div id="empty" style="display:none">cargando…</div>
+</main>
+
+<!-- PROJECT LIGHTBOX -->
+<div id="modal">
+  <div id="mtop">
+    <span id="mtitle"></span>
+    <span style="display:flex;gap:16px;align-items:center">
+      <span id="mcount"></span>
+      <button id="mclose" onclick="closeM()">×</button>
+    </span>
+  </div>
+  <div id="mstage">
+    <button id="mprev" class="marrow" onclick="nav(-1)"><span>‹</span></button>
+    <img id="mimg" alt="">
+    <button id="mnext" class="marrow" onclick="nav(1)"><span>›</span></button>
+  </div>
+</div>
+
+<!-- VIDEO LIGHTBOX -->
+<div id="vmodal">
+  <div id="vtop">
+    <span id="vtitle"></span>
+    <button id="vclose" onclick="closeV()">×</button>
+  </div>
+  <div id="vframe"><div class="box" id="vbox"></div></div>
+</div>
+
+<script>
+/* ====== CLIPS (showcase vimeo.com/showcase/12312201) ====== */
+var VC="https://i.vimeocdn.com/video/";
+var CLIPS=[
+ {id:"1206577236",t:"trial graduación",o:"H",th:VC+"2175457737-4c708e724463242c533945f163a4b680ce952cc5fd8dc890ea8d82e6ee636125-d_640"},
+ {id:"1206577566",t:"trial linos 2025",o:"H",th:VC+"2175458189-e7b620f36f587649fddd157c8be54f6e96967e998f587e1fcab0e9f522c667b9-d_640"},
+ {id:"1206578041",t:"trial nueva colección",o:"H",th:VC+"2175459565-f8d46d0f4b8851612826968fa4f345241bff465b1d2052a65737972bbd610859-d_640"},
+ {id:"1206579227",t:"trial spring summer 2025",o:"V",th:VC+"2175460383-63be33d504a208c06fbafea29e61354e08b1d92e9ad0da10b671f20e7127db2e-d_640"},
+ {id:"1206568630",t:"jack & jones ddp",o:"V",th:VC+"2175446079-6f1a8459326dcc3b4421710e333e49196406e916b300c4018d43a9e92d6256b9-d_640"},
+ {id:"1206568953",t:"massima rita abrigos",o:"V",th:VC+"2175446513-aed47bd37151c7dd16a3549d1844bc98b3c1cf3eb439d83f7938dc467e7905f8-d_640"},
+ {id:"1206569416",t:"massima rita trench 2",o:"V",th:VC+"2175447128-67a72113f389d72df39bcd1d8505f7ec1e9b3517b3d0f510f790be7232f677ab-d_640"},
+ {id:"1206579942",t:"trial summer 2 2025",o:"V",th:VC+"2175461254-05221460b52ac0d4de57641da1a1163ebdc45474f4770d2c53a374e91ae76f3d-d_640"},
+ {id:"1206580179",t:"trial summer 2025",o:"V",th:VC+"2175461551-8ec5e4d3f0234e866daa697f35af42f9fa9e5211e11ebefa9457c7aadd197e9d-d_640"},
+ {id:"1206580359",t:"trial zapato",o:"H",th:VC+"2175461798-b3e623c5becfdc06027e8728af8f64ed8f78807de4f5c9b799251ed0ebce61e7-d_640"},
+ {id:"1206570560",t:"ripley marquis 2",o:"V",th:VC+"2175448741-64a929cb25581b1ae8be024a1043aa9e34dc8a0ae6b8947a3bff45d87b5cd1f8-d_640"},
+ {id:"1206570898",t:"ripley marquis",o:"V",th:VC+"2175449187-6bab55702f978eae4fd8a252a4f710499fd8e62bfbda272dee9c85a2dc052224-d_640"},
+ {id:"1206571234",t:"ripley sandalias",o:"V",th:VC+"2175449637-2815092588515caa503f7b65421b58e981960f26b81f23dd3c13ae15c9975b09-d_640"},
+ {id:"1206513495",t:"c miller summer 2023",o:"V",th:VC+"2175375490-cc270e107928f98887381d1f386bafd28441ad7f2c219e91488a7d4563001709-d_640"}
+];
+
+/* ====== STATE ====== */
+var P=[],S={},aF="ALL",VIEW="index";
+var cP=0,cI=0;
+
+/* ====== DATA: leer proyectos desde / (index.html en vivo) ====== */
+function full(pair){return "img/"+pair.split(":")[0]+".jpg";}
+function small(pair){var u=pair.split(":")[0];return S[u]?"img/"+u+"_600.jpg":"img/"+u+".jpg";}
+function cover(p){
+  if(p.cov){var u=p.cov.split(":")[0];return S[u]?"img/"+u+"_600.jpg":"img/"+u+".jpg";}
+  return small(p.imgs[0]);
+}
+
+async function load(){
+  try{
+    var r=await fetch("/",{cache:"no-store"});
+    var t=await r.text();
+    var mp=t.match(/var\s+P\s*=\s*(\[[\s\S]*?\])\s*;/);
+    var ms=t.match(/var\s+S\s*=\s*(\{[\s\S]*?\})\s*;/);
+    if(!mp) throw new Error("no P");
+    P=JSON.parse(mp[1]).filter(function(p){return p.imgs&&p.imgs.length;});
+    S=ms?JSON.parse(ms[1]):{};
+    document.getElementById("empty").style.display="none";
+    buildIndex();render();
+  }catch(e){
+    document.getElementById("empty").style.display="block";
+    document.getElementById("empty").textContent="no se pudieron cargar los proyectos.";
+  }
+}
+
+/* ====== SIDEBAR INDEX ====== */
+function buildIndex(){
+  var ix=document.getElementById("index");ix.innerHTML="";
+  P.forEach(function(p,i){
+    var a=document.createElement("div");
+    a.className="ixItem";a.textContent=p.t;a.dataset.pi=i;
+    a.onclick=function(){openM(i);};
+    ix.appendChild(a);
+  });
+}
+
+/* ====== MAIN GRID ====== */
+function render(){
+  var stage=document.getElementById("stage");stage.innerHTML="";
+  if(VIEW==="motion"){renderMotion(stage);return;}
+  var list=[];
+  P.forEach(function(p,pi){
+    if(aF!=="ALL"&&p.cat!==aF)return;
+    list.push({type:"photo",pi:pi});
+  });
+  // intercalar clips (solo en vista ALL para no romper el filtro por categoría)
+  if(aF==="ALL"){
+    var every=Math.max(6,Math.floor(list.length/CLIPS.length));
+    var ci=0,pos=every;
+    while(ci<CLIPS.length&&pos<=list.length){
+      list.splice(pos,0,{type:"clip",ci:ci});
+      ci++;pos+=every+1;
+    }
+  }
+  if(!list.length){stage.innerHTML='<div id="empty">sin proyectos.</div>';return;}
+  list.forEach(function(it){
+    if(it.type==="photo")stage.appendChild(photoCell(P[it.pi],it.pi));
+    else stage.appendChild(clipCell(CLIPS[it.ci]));
+  });
+}
+function photoCell(p,pi){
+  var d=document.createElement("div");d.className="cell";
+  var im=document.createElement("img");im.loading="lazy";im.src=cover(p);im.alt=p.t;
+  var cap=document.createElement("div");cap.className="cap";cap.textContent=p.t;
+  d.appendChild(im);d.appendChild(cap);
+  d.onclick=function(){openM(pi);};
+  return d;
+}
+function clipCell(c){
+  var d=document.createElement("div");d.className="cell vid";
+  var im=document.createElement("img");im.loading="lazy";im.alt=c.t;
+  im.src=c.th;
+  im.onerror=function(){this.onerror=null;this.src="https://vumbnail.com/"+c.id+".jpg";};
+  var cap=document.createElement("div");cap.className="cap";cap.textContent=c.t;
+  d.appendChild(im);d.appendChild(cap);
+  d.onclick=function(){openV(c);};
+  return d;
+}
+function renderMotion(stage){
+  CLIPS.forEach(function(c){stage.appendChild(clipCell(c));});
+}
+
+/* ====== VIEW / FILTER ====== */
+function setView(v){
+  VIEW=v;
+  document.querySelectorAll(".vbtn").forEach(function(b){b.classList.toggle("act",b.dataset.view===v);});
+  document.getElementById("filters").style.display=(v==="index")?"flex":"none";
+  var st=document.getElementById("stage");st.style.columnCount="";
+  window.scrollTo(0,0);render();
+}
+function setCat(c,btn){
+  aF=c;
+  document.querySelectorAll(".fbtn").forEach(function(b){b.classList.remove("act");});
+  btn.classList.add("act");
+  if(VIEW!=="index")setView("index");else render();
+}
+
+/* ====== PROJECT MODAL ====== */
+function openM(pi){
+  cP=pi;cI=0;
+  document.getElementById("modal").classList.add("open");
+  document.addEventListener("keydown",onKey);
+  // precargar
+  P[pi].imgs.slice(0,3).forEach(function(x){var i=new Image();i.src=full(x);});
+  showImg();
+}
+function showImg(){
+  var p=P[cP],imgs=p.imgs;
+  var el=document.getElementById("mimg");
+  var sm=small(imgs[cI]),fu=full(imgs[cI]);
+  if(sm!==fu){el.src=sm;var b=new Image();(function(pp,ii){b.onload=function(){if(cP===pp&&cI===ii)el.src=fu;};})(cP,cI);b.src=fu;}
+  else el.src=fu;
+  var nx=imgs[(cI+1)%imgs.length];(new Image()).src=full(nx);
+  document.getElementById("mtitle").textContent=p.t;
+  document.getElementById("mcount").textContent=(cI+1)+" / "+imgs.length;
+  var show=imgs.length>1?"flex":"none";
+  document.getElementById("mprev").style.display=show;
+  document.getElementById("mnext").style.display=show;
+}
+function nav(d){
+  var n=P[cP].imgs.length;cI=(cI+d+n)%n;showImg();
+}
+function closeM(){
+  document.getElementById("modal").classList.remove("open");
+  document.removeEventListener("keydown",onKey);
+}
+function onKey(e){
+  if(e.key==="Escape")closeM();
+  else if(e.key==="ArrowLeft")nav(-1);
+  else if(e.key==="ArrowRight")nav(1);
+}
+
+/* swipe modal */
+var _tx=0,_ty=0,_mod=document.getElementById("modal");
+_mod.addEventListener("touchstart",function(e){_tx=e.touches[0].clientX;_ty=e.touches[0].clientY;},{passive:true});
+_mod.addEventListener("touchend",function(e){
+  var dx=e.changedTouches[0].clientX-_tx,dy=e.changedTouches[0].clientY-_ty;
+  if(Math.abs(dx)>50&&Math.abs(dx)>Math.abs(dy)*1.5&&P[cP].imgs.length>1)nav(dx<0?1:-1);
+  else if(dy>80&&Math.abs(dy)>Math.abs(dx)*1.5)closeM();
+},{passive:true});
+document.getElementById("mstage").addEventListener("click",function(e){
+  if(e.target.id==="mstage")closeM();
+});
+
+/* ====== VIDEO MODAL ====== */
+function openV(c){
+  var box=document.getElementById("vbox");
+  var pad=(c.o==="H")?56.25:150; // 16:9 vs vertical ~9:16
+  box.style.paddingBottom=pad+"%";box.style.height="0";
+  box.innerHTML='<iframe src="https://player.vimeo.com/video/'+c.id+'?autoplay=1&title=0&byline=0&portrait=0" allow="autoplay;fullscreen;picture-in-picture" allowfullscreen style="position:absolute;inset:0"></iframe>';
+  document.getElementById("vtitle").textContent=c.t;
+  document.getElementById("vmodal").classList.add("open");
+  document.addEventListener("keydown",onVKey);
+}
+function closeV(){
+  document.getElementById("vmodal").classList.remove("open");
+  document.getElementById("vbox").innerHTML="";
+  document.removeEventListener("keydown",onVKey);
+}
+function onVKey(e){if(e.key==="Escape")closeV();}
+document.getElementById("vframe").addEventListener("click",function(e){
+  if(e.target.id==="vframe")closeV();
+});
+
+/* ====== RESIZE (recalcular columnas motion) ====== */
+var _rt;
+window.addEventListener("resize",function(){
+  clearTimeout(_rt);_rt=setTimeout(function(){if(VIEW==="motion")render();},150);
+});
+
+load();
+</script>
+</body>
+</html>
