@@ -252,7 +252,7 @@ async function load(){
     P=JSON.parse(mp[1]).filter(function(p){return p.imgs&&p.imgs.length;});
     S=ms?JSON.parse(ms[1]):{};
     document.getElementById("empty").style.display="none";
-    buildIndex();render();
+    buildIndex();render();_openFromHash();
   }catch(e){
     document.getElementById("empty").style.display="block";
     document.getElementById("empty").textContent="no se pudieron cargar los proyectos.";
@@ -331,8 +331,13 @@ function setCat(c,btn){
 }
 
 /* ====== PROJECT MODAL ====== */
+function _slug(t){return (t||"").toString().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"")||"proyecto";}
+function _slugFor(pi){var b=_slug(P[pi].t),c=0;for(var k=0;k<pi;k++){if(_slug(P[k].t)===b)c++;}return c?b+"-"+(c+1):b;}
+function _setHash(pi){try{history.replaceState(null,"","#"+_slugFor(pi));}catch(e){}}
+function _clrHash(){try{history.replaceState(null,"",location.pathname+location.search);}catch(e){}}
+function _openFromHash(){var x=(location.hash||"").replace(/^#\/?/,"");if(!x)return;for(var k=0;k<P.length;k++){if(_slugFor(k)===x){openM(k);return;}}}
 function openM(pi){
-  cP=pi;cI=0;
+  cP=pi;cI=0;_setHash(pi);
   document.getElementById("modal").classList.add("open");
   document.addEventListener("keydown",onKey);
   P[pi].imgs.slice(0,3).forEach(function(x){var i=new Image();i.src=full(x);});
@@ -356,7 +361,7 @@ function nav(d){
 }
 function closeM(){
   document.getElementById("modal").classList.remove("open");
-  document.removeEventListener("keydown",onKey);
+  document.removeEventListener("keydown",onKey);_clrHash();
 }
 function onKey(e){
   if(e.key==="Escape")closeM();
