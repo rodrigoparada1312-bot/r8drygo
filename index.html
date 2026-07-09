@@ -252,7 +252,7 @@ async function load(){
     P=JSON.parse(mp[1]).filter(function(p){return p.imgs&&p.imgs.length;});
     S=ms?JSON.parse(ms[1]):{};
     document.getElementById("empty").style.display="none";
-    buildIndex();render();_openFromHash();
+    buildIndex();render();_openFromHash();setTimeout(_openFromHash,150);
   }catch(e){
     document.getElementById("empty").style.display="block";
     document.getElementById("empty").textContent="no se pudieron cargar los proyectos.";
@@ -410,6 +410,7 @@ window.addEventListener("resize",function(){
   },160);
 });
 
+window.addEventListener("hashchange",function(){if(location.hash){_openFromHash();}else{var _m=document.getElementById("modal");if(_m&&_m.classList.contains("open"))closeM();}});
 load();
 </script>
 </body>
