@@ -382,14 +382,15 @@ document.getElementById("mstage").addEventListener("click",function(e){
 });
 
 /* ====== VIDEO MODAL ====== */
+function _arFetch(c){if(c._ar)return;try{fetch("https://vimeo.com/api/oembed.json?url=https://vimeo.com/"+c.id).then(function(r){return r.json();}).then(function(d){if(d&&d.width&&d.height){c._ar=String(d.width/d.height);var b=document.getElementById("vbox");if(b&&b.dataset.cid===String(c.id)){b.dataset.ar=c._ar;_fitV();}}}).catch(function(){});}catch(e){}}
 function _fitV(){var fr=document.getElementById("vframe");var box=document.getElementById("vbox");if(!fr||!box||!box.dataset.ar)return;var ar=parseFloat(box.dataset.ar);var availW=Math.min(fr.clientWidth-40,1100);var availH=fr.clientHeight-24;if(availW<=0||availH<=0)return;var w=availW,hh=w/ar;if(hh>availH){hh=availH;w=hh*ar;}box.style.paddingBottom="0";box.style.height=Math.round(hh)+"px";box.style.width=Math.round(w)+"px";box.style.maxWidth="100%";}
 function openV(c){
   var box=document.getElementById("vbox");
-  box.dataset.ar=(c.o==="H")?"1.7778":"0.6667";
+  box.dataset.cid=String(c.id);box.dataset.ar=c._ar?c._ar:((c.o==="H")?"1.7778":"0.6667");
   box.innerHTML='<iframe src="https://player.vimeo.com/video/'+c.id+'?autoplay=1&title=0&byline=0&portrait=0" allow="autoplay;fullscreen;picture-in-picture" allowfullscreen style="position:absolute;inset:0"></iframe>';
   document.getElementById("vtitle").textContent=c.t;
   document.getElementById("vmodal").classList.add("open");
-  _fitV();try{history.replaceState(null,"","#v/"+_slug(c.t));}catch(e){}
+  _fitV();try{history.replaceState(null,"","#v/"+_slug(c.t));}catch(e){}_arFetch(c);
   document.addEventListener("keydown",onVKey);
 }
 function closeV(){
