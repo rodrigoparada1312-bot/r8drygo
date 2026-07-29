@@ -335,7 +335,7 @@ function _slug(t){return (t||"").toString().toLowerCase().normalize("NFD").repla
 function _slugFor(pi){var b=_slug(P[pi].t),c=0;for(var k=0;k<pi;k++){if(_slug(P[k].t)===b)c++;}return c?b+"-"+(c+1):b;}
 function _setHash(pi){try{history.replaceState(null,"","#"+_slugFor(pi));}catch(e){}}
 function _clrHash(){try{history.replaceState(null,"",location.pathname+location.search);}catch(e){}}
-function _openFromHash(){var x=(location.hash||"").replace(/^#\/?/,"");if(!x)return;for(var k=0;k<P.length;k++){if(_slugFor(k)===x){openM(k);return;}}if(typeof CLIPS!=="undefined"&&CLIPS){for(var j=0;j<CLIPS.length;j++){if(_slug(CLIPS[j].t)===x){openV(CLIPS[j]);return;}}}}
+function _openFromHash(){var x=(location.hash||"").replace(/^#\/?/,"");if(!x)return;if(x.slice(0,2)==="v/"){var vx=x.slice(2);if(typeof CLIPS!=="undefined"&&CLIPS){for(var j=0;j<CLIPS.length;j++){if(_slug(CLIPS[j].t)===vx){openV(CLIPS[j]);return;}}}return;}for(var k=0;k<P.length;k++){if(_slugFor(k)===x){openM(k);return;}}}
 function openM(pi){
   cP=pi;cI=0;_setHash(pi);
   document.getElementById("modal").classList.add("open");
@@ -389,7 +389,7 @@ function openV(c){
   box.innerHTML='<iframe src="https://player.vimeo.com/video/'+c.id+'?autoplay=1&title=0&byline=0&portrait=0" allow="autoplay;fullscreen;picture-in-picture" allowfullscreen style="position:absolute;inset:0"></iframe>';
   document.getElementById("vtitle").textContent=c.t;
   document.getElementById("vmodal").classList.add("open");
-  _fitV();try{history.replaceState(null,"","#"+_slug(c.t));}catch(e){}
+  _fitV();try{history.replaceState(null,"","#v/"+_slug(c.t));}catch(e){}
   document.addEventListener("keydown",onVKey);
 }
 function closeV(){
