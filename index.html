@@ -335,7 +335,7 @@ function _slug(t){return (t||"").toString().toLowerCase().normalize("NFD").repla
 function _slugFor(pi){var b=_slug(P[pi].t),c=0;for(var k=0;k<pi;k++){if(_slug(P[k].t)===b)c++;}return c?b+"-"+(c+1):b;}
 function _setHash(pi){try{history.replaceState(null,"","#"+_slugFor(pi));}catch(e){}}
 function _clrHash(){try{history.replaceState(null,"",location.pathname+location.search);}catch(e){}}
-function _openFromHash(){var x=(location.hash||"").replace(/^#\/?/,"");if(!x)return;for(var k=0;k<P.length;k++){if(_slugFor(k)===x){openM(k);return;}}}
+function _openFromHash(){var x=(location.hash||"").replace(/^#\/?/,"");if(!x)return;for(var k=0;k<P.length;k++){if(_slugFor(k)===x){openM(k);return;}}if(typeof CLIPS!=="undefined"&&CLIPS){for(var j=0;j<CLIPS.length;j++){if(_slug(CLIPS[j].t)===x){openV(CLIPS[j]);return;}}}}
 function openM(pi){
   cP=pi;cI=0;_setHash(pi);
   document.getElementById("modal").classList.add("open");
@@ -382,19 +382,20 @@ document.getElementById("mstage").addEventListener("click",function(e){
 });
 
 /* ====== VIDEO MODAL ====== */
+function _fitV(){var fr=document.getElementById("vframe");var box=document.getElementById("vbox");if(!fr||!box||!box.dataset.ar)return;var ar=parseFloat(box.dataset.ar);var availW=Math.min(fr.clientWidth-40,1100);var availH=fr.clientHeight-24;if(availW<=0||availH<=0)return;var w=availW,hh=w/ar;if(hh>availH){hh=availH;w=hh*ar;}box.style.paddingBottom="0";box.style.height=Math.round(hh)+"px";box.style.width=Math.round(w)+"px";box.style.maxWidth="100%";}
 function openV(c){
   var box=document.getElementById("vbox");
-  var pad=(c.o==="H")?56.25:150;
-  box.style.paddingBottom=pad+"%";box.style.height="0";
+  box.dataset.ar=(c.o==="H")?"1.7778":"0.6667";
   box.innerHTML='<iframe src="https://player.vimeo.com/video/'+c.id+'?autoplay=1&title=0&byline=0&portrait=0" allow="autoplay;fullscreen;picture-in-picture" allowfullscreen style="position:absolute;inset:0"></iframe>';
   document.getElementById("vtitle").textContent=c.t;
   document.getElementById("vmodal").classList.add("open");
+  _fitV();try{history.replaceState(null,"","#"+_slug(c.t));}catch(e){}
   document.addEventListener("keydown",onVKey);
 }
 function closeV(){
   document.getElementById("vmodal").classList.remove("open");
   document.getElementById("vbox").innerHTML="";
-  document.removeEventListener("keydown",onVKey);
+  document.removeEventListener("keydown",onVKey);_clrHash();
 }
 function onVKey(e){if(e.key==="Escape")closeV();}
 document.getElementById("vframe").addEventListener("click",function(e){
@@ -405,12 +406,12 @@ document.getElementById("vframe").addEventListener("click",function(e){
 var _rt,_lastN=colCount();
 window.addEventListener("resize",function(){
   clearTimeout(_rt);_rt=setTimeout(function(){
-    var n=colCount();
+    _fitV();var n=colCount();
     if(n!==_lastN){_lastN=n;if(VIEW!=="about")render();}
   },160);
 });
 
-window.addEventListener("hashchange",function(){if(location.hash){_openFromHash();}else{var _m=document.getElementById("modal");if(_m&&_m.classList.contains("open"))closeM();}});
+window.addEventListener("hashchange",function(){if(location.hash){_openFromHash();}else{var _m=document.getElementById("modal");if(_m&&_m.classList.contains("open"))closeM();var _v=document.getElementById("vmodal");if(_v&&_v.classList.contains("open"))closeV();}});
 load();
 </script>
 </body>
