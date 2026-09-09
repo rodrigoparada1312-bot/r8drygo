@@ -293,7 +293,7 @@ async function render(){
   }
   if(!items.length){stage.innerHTML='<div id="empty">sin resultados.</div>';return;}
   var built=items.map(function(it){var el=(it.type==="photo")?photoCell(P[it.pi],it.pi):clipCell(it.clip);return {el:el,img:el.querySelector("img")};});
-  var ratios=await Promise.all(built.map(function(b){return _ratioOf(b.img.src);}));
+  var ratios=await Promise.all(built.map(function(b){return b.el.dataset.ar?parseFloat(b.el.dataset.ar):_ratioOf(b.img.src);}));
   if(myId!==_renderId)return;
   stage.innerHTML="";
   var n=colCount();var cols=[],Hh=[];
@@ -312,7 +312,7 @@ function photoCell(p,pi){
 function clipCell(c){
   var d=document.createElement("div");d.className="cell vid";
   var im=document.createElement("img");im.loading="lazy";im.alt=c.t;
-  im.src=c.th;
+  im.src=c.th;if(c.id==="1225340345"){d.dataset.ar="0.8";im.style.cssText="width:100%;height:auto;aspect-ratio:4/5;object-fit:cover;display:block";}
   im.onerror=function(){this.onerror=null;this.src="https://vumbnail.com/"+c.id+".jpg";};
   var cap=document.createElement("div");cap.className="cap";cap.textContent=c.t;
   d.appendChild(im);d.appendChild(cap);
