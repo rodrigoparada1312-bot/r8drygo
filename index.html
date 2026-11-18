@@ -296,7 +296,7 @@ async function render(){
   if(VIEW==="about"){stage.style.display="none";about.classList.add("on");return;}
   about.classList.remove("on");stage.style.display="flex";buildIndex();
   var items=[];
-  if(VIEW==="video"){CLIPS.forEach(function(c){items.push({type:"clip",clip:c});});}
+  if(VIEW==="video"){CLIPS.slice().sort(function(x,y){return (y.id==="1247987766")-(x.id==="1247987766");}).forEach(function(c){items.push({type:"clip",clip:c});});}
   else{
     P.forEach(function(p,pi){if(aF==="ALL"){if(p.cat==="AUTORAL")return;}else if(p.cat!==aF)return;items.push({type:"photo",pi:pi});});
     if(aF==="ALL"){var hc=homeClips().filter(function(c){return c.id!=="1247987766";});if(hc.length){var total=items.length+hc.length;for(var k=0;k<hc.length;k++){var pos=Math.round((k+1)*total/(hc.length+1));if(pos>items.length)pos=items.length;items.splice(pos,0,{type:"clip",clip:hc[k]});}}}
