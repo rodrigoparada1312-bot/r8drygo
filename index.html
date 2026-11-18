@@ -299,8 +299,9 @@ async function render(){
   if(VIEW==="video"){CLIPS.forEach(function(c){items.push({type:"clip",clip:c});});}
   else{
     P.forEach(function(p,pi){if(aF==="ALL"){if(p.cat==="AUTORAL")return;}else if(p.cat!==aF)return;items.push({type:"photo",pi:pi});});
-    if(aF==="ALL"){var hc=homeClips();if(hc.length){var total=items.length+hc.length;for(var k=0;k<hc.length;k++){var pos=Math.round((k+1)*total/(hc.length+1));if(pos>items.length)pos=items.length;items.splice(pos,0,{type:"clip",clip:hc[k]});}}}
+    if(aF==="ALL"){var hc=homeClips().filter(function(c){return c.id!=="1247987766";});if(hc.length){var total=items.length+hc.length;for(var k=0;k<hc.length;k++){var pos=Math.round((k+1)*total/(hc.length+1));if(pos>items.length)pos=items.length;items.splice(pos,0,{type:"clip",clip:hc[k]});}}}
   }
+  if(VIEW!=="video"&&aF==="ALL"){var pc=CLIPS.filter(function(c){return c.id==="1247987766";})[0];if(pc)items.unshift({type:"clip",clip:pc});}
   if(!items.length){stage.innerHTML='<div id="empty">sin resultados.</div>';return;}
   var built=items.map(function(it){var el=(it.type==="photo")?photoCell(P[it.pi],it.pi):clipCell(it.clip);return {el:el,img:el.querySelector("img")};});
   var ratios=await Promise.all(built.map(function(b){return b.el.dataset.ar?parseFloat(b.el.dataset.ar):_ratioOf(b.img.src);}));
