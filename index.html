@@ -238,7 +238,8 @@ var CLIPS=[
  {id:"1206567106",t:"degoya winter 2024",o:"H",home:true,ho:14,th:VC+"2175444163-e01c938b6412737c801a176502155e20ebdfc5e09583335d59b9ae17c12cd140-d_640"},
  {id:"1206576355",t:"trial alto verano",o:"H",home:true,ho:15,th:VC+"2175456451-22c402e931f54e43887a881b17dca489fd0931766934c939146e7dd8976cfbb2-d_640"},
  {id:"1206567763",t:"jack & jones ddp 3",o:"H",home:true,ho:16,th:VC+"2175445044-d6f053e3df47fec9e81e4792037204b5182b65135d9d7eef134407e02a9cdd22-d_640"},
- {id:"1206581203",t:"abc verano 2025",o:"H",home:true,ho:17,th:VC+"2175462918-4e61c125d6aa11860c352bcdf1de45ca9077f354349b988cd8fa54ab8992c55b-d_640"}
+ {id:"1206581203",t:"abc verano 2025",o:"H",home:true,ho:17,th:VC+"2175462918-4e61c125d6aa11860c352bcdf1de45ca9077f354349b988cd8fa54ab8992c55b-d_640"},
+ {id:"1247987766",t:"palosanto",o:"H",home:true,ho:18,th:VC+"2227921808-44030e759cc24f2db2be978bf647d22614d511cdb3da78e0efc8ec91c3ab8b6a-d_640"}
 ];
 function homeClips(){return CLIPS.filter(function(c){return c.home;}).sort(function(a,b){return a.ho-b.ho;});}
 
@@ -285,7 +286,7 @@ function buildIndex(){
 }
 
 /* ====== MAIN GRID (columnas round-robin, mismo orden que el index) ====== */
-function colCount(){return window.innerWidth<=820?2:(window.innerWidth<=1200?4:5);}
+function colCount(){return window.innerWidth<=640?1:(window.innerWidth<=1100?2:3);}
 
 var _renderId=0;
 function _ratioOf(src){return new Promise(function(res){var im=new Image();var done=false;function d(v){if(done)return;done=true;res(v);}im.onload=function(){d(im.naturalWidth&&im.naturalHeight?im.naturalWidth/im.naturalHeight:0.8);};im.onerror=function(){d(0.8);};setTimeout(function(){d(0.8);},4000);im.src=src;});}
